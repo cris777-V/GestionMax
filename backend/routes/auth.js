@@ -6,17 +6,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware de sesión
-app.use(session({
-    secret: 'gestionmax_supersecreto',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}));
-
-// Middlewares para JSON y formularios
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,9 +17,6 @@ mongoose.connect(process.env.MONGO_URI || '', {
 })
 .then(() => console.log('🟢 Conectado a MongoDB'))
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
-
-// Importar middleware de autenticación
-const requireLogin = require('./middlewares/authMiddleware.js');
 
 // Rutas protegidas
 app.get('/crear', requireLogin, (req, res) => {
@@ -46,12 +32,4 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'Menu_principal.html'));
 });
 
-// Rutas de login y registro
-const authRoutes = require('./routes/authroutes');
-app.use(authRoutes);
-
-// Puerto
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
-});
+// Rutas de login y re

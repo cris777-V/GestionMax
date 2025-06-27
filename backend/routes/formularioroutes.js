@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Formulario = require('../models/formulario');
-const requireLogin = require('../middlewares/authMiddleware');
 
 // Ruta para guardar formulario
 router.post('/procesar-formulario', requireLogin, async (req, res) => {

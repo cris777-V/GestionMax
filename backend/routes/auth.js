@@ -33,7 +33,7 @@ router.post('/registro', express.urlencoded({ extended: true }), async (req, res
         req.session.usuarioId = nuevoUsuario._id;
 
         // Redirige al menú principal
-        res.redirect('/');
+        res.redirect('https://gestionmax.netlify.app/');
     } catch (error) {
         console.error('Error al registrar:', error);
         res.status(500).send('Error del servidor');
@@ -58,7 +58,7 @@ router.post('/login', express.urlencoded({ extended: true }), async (req, res) =
         //  Guardar sesión tras login
         req.session.usuarioId = usuario._id;
 
-        res.redirect('/');
+        res.redirect('https://gestionmax.netlify.app/login.html');
     } catch (error) {
         console.error('Error en login:', error);
         res.status(500).send('Error del servidor');

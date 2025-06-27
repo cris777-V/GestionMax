@@ -2,19 +2,29 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors({
+    origin: 'https://gestionmax.netlify.app/', 
+    credentials: true
+}));
 
 // Configurar sesiones
 app.use(session({
     secret: 'gestionmax_supersecreto',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // si usas HTTPS, cambia a true
+    cookie: {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'lax'
+    }
 }));
 
-// Middleware para JSON y formulario
+// Middleware para JSON y formularios
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,11 +38,6 @@ mongoose.connect(process.env.MONGO_URI || '', {
 })
 .then(() => console.log('🟢 Conectado a MongoDB'))
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
-
-// Rutas principales
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/Menu_principal.html'));
-});
 
 // Middleware de autenticación
 function requireLogin(req, res, next) {
@@ -52,27 +57,28 @@ app.get('/dashboard', requireLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'private/dashboard.html'));
 });
 
-// Importar rutas de autenticación
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/Menu_principal.html'));
+});
+
+// Rutas de autenticación
 const authRoutes = require('./routes/authRoutes');
 app.use(authRoutes);
 
-
+// Obtener usuario actual
 const User = require('./models/user');
-
 app.get('/api/usuario-actual', requireLogin, async (req, res) => {
     try {
-    const usuario = await User.findById(req.session.usuarioId).select('-contraseña');
-    res.json(usuario);
-} catch (err) {
-    res.status(500).json({ mensaje: 'Error al obtener el usuario' });
-}
+        const usuario = await User.findById(req.session.usuarioId).select('-contraseña');
+        res.json(usuario);
+    } catch (err) {
+        res.status(500).json({ mensaje: 'Error al obtener el usuario' });
+    }
 });
 
-
-// Iniciar servidor en render será 10000 igualmente...
+// Iniciar servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
 });
-
-

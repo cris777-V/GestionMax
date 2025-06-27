@@ -1,0 +1,14 @@
+{
+    "name": "gestionmax2-backend",
+    "version": "1.0.0",
+    "description": "Backend for GestionMax2",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "dotenv": "^16.5.0",
+        "express": "^4.21.2",
+        "mongoose": "^7.8.7"
+    }
+}

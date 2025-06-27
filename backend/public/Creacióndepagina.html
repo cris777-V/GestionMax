@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea tu pagina con nosotros</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+
+<h1 class="titulo">¡Crea tu pagina con nosotros!</h1>
+    <p class="caja1">¿Listo para tener tu página web con Gestion Max? ¡Excelente! Para comenzar, por favor, completa nuestro formulario de contacto y uno de nuestros asesores se comunicará contigo para tomar tus requerimientos y hacer realidad tu visión.</p>
+
+<section class="formulario"> 
+    <div>
+    <form action="/procesar-formulario" method="post">
+    <label for="nombre">Nombre:</label>
+    <input class="form-row" type="text" id="nombre" name="nombre">
+    </div>
+
+<br>
+
+    <div>
+    <label for="email">E-mail:</label>
+    <input class="form-row" type="email" id="email" name="email">
+    </div>
+
+<br>
+
+    <div>
+    <label for="telefono">Numero de telefono:</label>
+    <input class="form-row" type="number" id="telefono" name="telefono">
+    </div>
+
+<br>
+
+    <div>
+    <label for="horario-de-contacto">¿En qué horario deberiamos contactarte?:</label>
+    <textarea name="horario-de-contacto" id="horario-de-contacto" placeholder="Maximo 100 carácteres" maxlength="100" rows="7" cols="70"></textarea>
+    </div>
+
+    <div class="boton">
+    <input type="submit" value="Enviar Información">
+    </div>
+</section>
+
+
+
+</body>
+<footer class="footer"> 
+    <p><a href="Menu_principal.html">Volver al menu principal</a></p>
+</footer>
+</html>

@@ -10,16 +10,3 @@ const formularioSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Formulario', formularioSchema);
-
-const requireLogin = require('../middlewares/authMiddleware');
-
-// Obtener todos los formularios del usuario logueado
-router.get('/formularios', requireLogin, async (req, res) => {
-    try {
-    const formularios = await Formulario.find({ creadoPor: req.session.usuarioId }).sort({ creadoEn: -1 });
-    res.json(formularios);
-    } catch (error) {
-    console.error('Error al obtener formularios:', error);
-    res.status(500).json({ mensaje: 'Error al obtener los formularios' });
-    }
-});

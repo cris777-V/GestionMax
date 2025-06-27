@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGO_URI || '', {
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
 
 // Importar middleware de autenticación
-const requireLogin = require('./middleware/authmiddleware');
+const requireLogin = require('./middlewares/authMiddleware.js');
 
 // Rutas protegidas
 app.get('/crear', requireLogin, (req, res) => {

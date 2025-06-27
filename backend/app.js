@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
 });
 
 // Rutas de autenticación
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/auth');
 app.use(authRoutes);
 
 // Obtener usuario actual

@@ -1,25 +1,27 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const session = require('express-session');
 require('dotenv').config();
 
 const app = express();
 
-const session = require('express-session');
-
+// Configurar sesiones
 app.use(session({
     secret: 'gestionmax_supersecreto',
-resave: false,
-saveUninitialized: true,
-    cookie: { secure: false }
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // si usas HTTPS, cambia a true
 }));
 
-
+// Middleware para JSON y formulario
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI || '', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -27,38 +29,35 @@ mongoose.connect(process.env.MONGO_URI || '', {
 .then(() => console.log('🟢 Conectado a MongoDB'))
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
 
-// Ruta raíz
+// Rutas principales
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/Menu_principal.html'));
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
-});
+// Middleware de autenticación
+function requireLogin(req, res, next) {
+    if (req.session && req.session.usuarioId) {
+        return next();
+    } else {
+        return res.redirect('/login.html');
+    }
+}
 
+// Rutas protegidas
 app.get('/crear', requireLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'crear.html'));
 });
 
-
-//pnanel para usuario
-const requireLogin = require('./middlewares/authMiddleware');
-
 app.get('/dashboard', requireLogin, (req, res) => {
-res.sendFile(path.join(__dirname, 'private/dashboard.html'));
+    res.sendFile(path.join(__dirname, 'private/dashboard.html'));
 });
 
-function requireLogin(req, res, next) {
-    if (req.session && req.session.usuarioId) {
-    next();
-    } else {
-    res.redirect('/login.html');
-    }
-}
+// Importar rutas de autenticación (login, register, logout)
+const authRoutes = require('./routes/authRoutes');
+app.use(authRoutes);
 
-module.exports = requireLogin;
-
-
-
-
+// Iniciar servidor en render será 10000 igualmente...
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
+});

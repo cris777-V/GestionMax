@@ -13,5 +13,29 @@
     <div class="Ir">
     <a href="index.html" class="boton-volver">Ir al Menú Principal</a>
     </div>
+
+    <button onclick="cerrarSesion()">Cerrar sesión</button>
+
+<script>
+function cerrarSesion() {
+    fetch('/logout', { method: 'POST' })
+    .then(() => {
+        window.location.href = '/login.html';
+    });
+}
+</script>
+
 </main>
+<script>
+    fetch('/api/usuario-actual')
+    .then(res => res.json())
+    .then(data => {
+        const bienvenida = document.getElementById('bienvenida');
+        bienvenida.textContent = `¡Hola, ${data.nombre}! Este es tu panel personal.`;
+    })
+    .catch(err => {
+        console.error('Error al obtener datos del usuario:', err);
+    });
+</script>
+
 </body>

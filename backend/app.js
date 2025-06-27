@@ -52,12 +52,27 @@ app.get('/dashboard', requireLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'private/dashboard.html'));
 });
 
-// Importar rutas de autenticación (login, register, logout)
+// Importar rutas de autenticación
 const authRoutes = require('./routes/authRoutes');
 app.use(authRoutes);
+
+
+const User = require('./models/user');
+
+app.get('/api/usuario-actual', requireLogin, async (req, res) => {
+    try {
+    const usuario = await User.findById(req.session.usuarioId).select('-contraseña');
+    res.json(usuario);
+} catch (err) {
+    res.status(500).json({ mensaje: 'Error al obtener el usuario' });
+}
+});
+
 
 // Iniciar servidor en render será 10000 igualmente...
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
 });
+
+

@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const app = express();
 
-
 // Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -19,17 +18,21 @@ mongoose.connect(process.env.MONGO_URI || '', {
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
 
 // Rutas protegidas
-app.get('/crear', requireLogin, (req, res) => {
+app.get('/crear', (req, res) => {
+    if (!req.session || !req.session.usuarioId) {
+        return res.status(401).send('No autorizado');
+    }
     res.sendFile(path.join(__dirname, 'public', 'crear.html'));
 });
 
-app.get('/dashboard', requireLogin, (req, res) => {
+app.get('/dashboard', (req, res) => {
+    if (!req.session || !req.session.usuarioId) {
+        return res.status(401).send('No autorizado');
+    }
     res.sendFile(path.join(__dirname, 'private', 'dashboard.html'));
 });
 
 // Ruta pública
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'Menu_principal.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
-// Rutas de login y re

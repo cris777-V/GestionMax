@@ -1,117 +1,134 @@
 body {
-    background-color: aqua;
-    background-repeat: no-repeat;
-    background-position: center;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    background-image: url('Imagenes/fondo-de-pantalla.avif');
     background-size: cover;
-    background-image:url(backend/imagenes/fondo-de-pantalla.avif);
-    margin: 0px 0px 0px;
-    
-}   
-
-p, h1, h2, .footer { 
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-align: center;    
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-.footer > p {
+header {
+    background-color: #e9f8f2;
+    padding: 20px 0;
     text-align: center;
+    border-bottom: 1px solid #ccc;
 }
 
-p {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-align: start;
+h1 {
+    margin: 0;
+    color: #0d6b4e;
 }
 
-h1, h2 {
-    text-shadow: 1px 1px 4px;
+main {
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
 }
 
-li  {
-    text-align: center;
-    align-items: center;
-    list-style-type: none;
-}
-
-.titulo, .footer {
-    border: 5px solid rgb(0, 0, 0);
-    color: rgb(221, 221, 221);
-    background-color: rgb(0, 0, 0);
-    margin-top: 0px;
-    margin-left: -10px;
-    margin-right: -10px;
-    margin-bottom: 0px
-}
-
-.footer {
-    margin-top: 10%;
-}
-
-.caja1,.Sobre_nosotros,.articulo-1,.articulo-2,.formulario {
-    border: 5px solid rgb(219, 160, 160);
+/* === Sección del formulario === */
+.formulario {
+    background-color: #fdfdfd;
+    padding: 30px 25px;
     border-radius: 10px;
-    padding: 20px;
-    margin: 10%;
-    background-color: aqua;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.04);
+    border-left: 4px solid #0d6b4e;
 }
 
-.caja1:hover,.Sobre_nosotros:hover,.articulo-1:hover,.articulo-2:hover,.formulario:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+.formulario p {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #444;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #0d6b4e;
+    outline: none;
 }
 
 .boton {
     text-align: center;
 }
 
-.form-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    justify-content: space-between;
+.boton input[type="submit"] {
+    background-color: #0d6b4e;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.form-row textarea,
-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    resize: vertical;
+.boton input[type="submit"]:hover {
+    background-color: #095b3e;
 }
 
-.footer a {
-    color: rgb(255, 255, 255); 
+/* === Footer === */
+footer {
+    text-align: center;
+    margin: 30px 0;
+    color: #555;
+}
+
+footer a {
+    text-decoration: none;
+    color: #0d6b4e;
+    font-weight: bold;
+}
+
+footer a:hover {
     text-decoration: underline;
 }
 
-@media (max-width: 600px) {
-    body {
-        padding: 0 2vw;
+.footer-volver {
+    text-align: center;
+    margin: 40px 0 20px;
 }
 
-nav
-.caja1,.Sobre_nosotros,.articulo-1,.articulo-2,.formulario  ul {
-        display: flex;
-        flex-direction: rows;
-        gap: 10px;
+.boton-volver {
+    display: inline-block;
+    background-color: #0d6b4e;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(13, 107, 78, 0.2);
 }
 
-.caja1,.Sobre_nosotros,.articulo-1,.articulo-2,.formulario {
-        margin: 5% 0;
-        padding: 10px;
+.boton-volver:hover {
+    background-color: #095b3e;
+    transform: scale(1.05);
 }
 
-.form-row {
-        flex-direction: column;
-        align-items: stretch;
-}
-
-.form-row label {
-        margin-bottom: 5px;
-        text-align: left;
-}
-
-    .footer {
-        margin-top: 20px;
-        padding: 10px;
-    }
-}

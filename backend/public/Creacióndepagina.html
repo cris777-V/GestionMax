@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crea tu pagina con nosotros</title>
-    <link rel="stylesheet" href="style1.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Crear tu Página con Gestion Max</title>
+<link rel="stylesheet" href="style1.css" />
 </head>
 <body>
 
-<h1 class="titulo">¡Crea tu pagina con nosotros!</h1>
-    <p class="caja1">¿Listo para tener tu página web con Gestion Max? ¡Excelente! Para comenzar, por favor, completa nuestro formulario de contacto y uno de nuestros asesores se comunicará contigo para tomar tus requerimientos y hacer realidad tu visión.</p>
+<header>
+    <h1>¡Crea tu página con nosotros!</h1>
+</header>
 
-<section class="formulario"> 
-    <div>
-    <form action="/procesar-formulario" method="post">
-    <label for="nombre">Nombre:</label>
-    <input class="form-row" type="text" id="nombre" name="nombre">
-    </div>
+<main>
+    <section class="formulario">
+    <p>
+        ¿Listo para tener tu propia página web con <strong>Gestion Max</strong>?  
+        ¡Excelente! Para comenzar, por favor completa este formulario.  
+        Uno de nuestros asesores se pondrá en contacto contigo para ayudarte a convertir tu visión en realidad.
+    </p>
 
-<br>
+    <form action="/procesar-formulario" method="POST">
+        
+        <div class="form-group">
+            <label for="nombre">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="¿Cómo deberíamos llamarte?" required />
+        </div>
 
-    <div>
-    <label for="email">E-mail:</label>
-    <input class="form-row" type="email" id="email" name="email">
-    </div>
+        <div class="form-group">
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="email" placeholder="Correo electrónico" required />
+        </div>
 
-<br>
+        <div class="form-group">
+            <label for="telefono">Número de teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Numero de telefono" required />
+        </div>
 
-    <div>
-    <label for="telefono">Numero de telefono:</label>
-    <input class="form-row" type="number" id="telefono" name="telefono">
-    </div>
+        <div class="form-group">
+            <label for="horario-de-contacto">¿En qué horario deberíamos contactarte?</label>
+            <textarea id="horario-de-contacto" name="horario-de-contacto" placeholder="Ej: Lunes a viernes, después de las 6 p.m." maxlength="100" rows="5"></textarea>
+        </div>
 
-<br>
+        <div class="boton">
+            <input type="submit" value="Enviar Información"/>
+        </div>
+    </form>
+    </section>
+</main>
 
-    <div>
-    <label for="horario-de-contacto">¿En qué horario deberiamos contactarte?:</label>
-    <textarea name="horario-de-contacto" id="horario-de-contacto" placeholder="Maximo 100 carácteres" maxlength="100" rows="7" cols="70"></textarea>
-    </div>
-
-    <div class="boton">
-    <input type="submit" value="Enviar Información">
-    </div>
-</section>
+<footer class="footer-volver">
+    <a href="index.html" class="boton-volver">Volver al menú principal</a>
+</footer>
 
 
 
 </body>
-<footer class="footer"> 
-    <p><a href="index.html">Volver al menu principal</a></p>
-</footer>
 </html>

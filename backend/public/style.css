@@ -1,45 +1,125 @@
+/* === Estilo general === */
 body {
-    background-color: aquamarine; background-image: url(Imagenes/fondo-de-pantalla.avif);
-    background-size: cover;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e7e5e5;
+  color: #333;
+  line-height: 1.6;
+  background-image: url('Imagenes/fondo-de-pantalla.avif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-h1, h2 ,p {
-    font-family: Arial, Helvetica, sans-serif; 
-    text-align: center;
+h1, h2 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 10px;
 }
 
-li ,div ,header {
-    list-style-type: center;
+p {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  padding: 0 15px;
+  font-size: 1rem;
 }
 
-section {
-    align-items: center;
-}
-
-footer {
-    background-color: aquamarine;
-}
-
-head {
-    background-color: brown;
-}
-
+/* === Encabezado === */
 header {
-    background-color: aquamarine;
+  background-color: #e9f8f2;
+  padding: 20px 0;
+  border-bottom: 1px solid #ccc;
 }
 
-.contenedor {
-    display: flex;
-    flex-direction: row ;
-    background-color: lightgray;
-    align-items: center;
+header h1 {
+  margin: 0;
 }
 
-.contenedor1 {
-    background-color: azure;
-    width: 1000px;
-    display: flex;
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.navbar li a {
+  text-decoration: none;
+  color: #0d6b4e;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.navbar li a:hover {
+  background-color: #d0f0e4;
+}
+
+/* === Secciones === */
+.intro,
+.sobre-nosotros {
+  background-color: #fdfdfd;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* === Contenedor tipo blog === */
+.testimonios {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.testimonios article {
+  flex: 1 1 60%;
+  max-width: 60%;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-left: 4px solid #0d6b4e;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+}
+
+.testimonios article:last-child {
+  flex: 1 1 35%;
+  max-width: 35%;
+  background-color: #ffffff;
+  border-left: 4px solid #cccccc;
+}
+
+/* === Footer === */
+footer {
+  background-color: #e9f8f2;
+  text-align: center;
+  padding: 30px 15px;
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+}
+
+footer h2 {
+  margin-top: 0;
+}
+
+footer p {
+  margin: 5px 0;
+}
+
+/* === Responsive ajustes === */
+@media (max-width: 768px) {
+  .testimonios {
     flex-direction: column;
-    align-items:center ;
-    justify-content: flex-end;
+  }
+
+  .testimonios article {
+    max-width: 100%;
+  }
+
+    .navbar {
+    flex-direction: column;
+    align-items: center;
+    }
 }

@@ -55,6 +55,26 @@
     <p>&copy; 2025 Gestion Max. Desarrollado con dedicación y pasión por Cristian Mosquera y Jhon.</p>
     </section>
 </footer>
+<script>
+document.getElementById('link-formulario').addEventListener('click', function (e) {
+  e.preventDefault(); // Evita que el enlace funcione directamente
+
+fetch('/api/usuario-actual')
+    .then(res => {
+    if (res.ok) {
+        // Usuario autenticado, redirigir al formulario
+        window.location.href = '/crear';
+    } else {
+        // No autenticado, redirigir a login
+        window.location.href = '/login';
+    }
+    })
+    .catch(() => {
+      // Si falla el fetch, también redirige a login
+    window.location.href = '/login';
+    });
+});
+</script>
 
 </body>
 </html>

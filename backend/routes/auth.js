@@ -5,12 +5,12 @@ const User = require('../models/user');
 
 const router = express.Router();
 
-// Mostrar formulario de login
+// Formulario de login
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
 
-// Mostrar formulario de registro
+// Formulario de registro
 router.get('/registro', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'registro.html'));
 });
@@ -30,7 +30,7 @@ router.post('/registro', express.urlencoded({ extended: true }), async (req, res
         await nuevoUsuario.save();
 
         req.session.usuarioId = nuevoUsuario._id;
-        res.redirect('/dashboard');
+        res.redirect('/');
     } catch (error) {
         console.error('Error al registrar:', error);
         res.status(500).send('Error del servidor');
@@ -52,8 +52,8 @@ router.post('/login', express.urlencoded({ extended: true }), async (req, res) =
             return res.status(401).send('Contraseña incorrecta');
         }
 
-        req.session.usuarioId = usuario._id;
-        res.redirect('/dashboard');
+        req.session.usuarioId = nuevoUsuario._id;
+        res.redirect('/');
     } catch (error) {
         console.error('Error en login:', error);
         res.status(500).send('Error del servidor');

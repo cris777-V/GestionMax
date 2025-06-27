@@ -19,7 +19,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: true,         // En producción con HTTPS
+        secure: true,        
         httpOnly: true,
         sameSite: 'lax'
     }
@@ -68,8 +68,12 @@ app.get('/api/usuario-actual', async (req, res) => {
 
 // Ruta raíz
 app.get('/', (req, res) => {
+    if (!req.session || !req.session.usuarioId) {
+        return res.redirect('/login');
+    }
     res.sendFile(path.join(__dirname, 'public', 'Menu_principal.html'));
 });
+
 
 // Rutas de autenticación
 const authRoutes = require('./routes/auth');

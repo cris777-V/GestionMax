@@ -1,60 +1,57 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const User = require('../models/user');
+const mongoose = require('mongoose');
+const path = require('path');
+const session = require('express-session');
+require('dotenv').config();
 
-const router = express.Router();
+const app = express();
 
-// Registro de usuario
-router.post('/register', async (req, res) => {
-const { nombre, correo, contraseña } = req.body;
+// Middleware de sesión
+app.use(session({
+    secret: 'gestionmax_supersecreto',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
-try {
-    const usuarioExistente = await User.findOne({ correo });
-    if (usuarioExistente) {
-    return res.status(400).json({ mensaje: 'El correo ya está registrado' });
-    }
+// Middlewares para JSON y formularios
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-    const hash = await bcrypt.hash(contraseña, 10);
-    const nuevoUsuario = new User({ nombre, correo, contraseña: hash });
-    await nuevoUsuario.save();
+// Archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
 
-    req.session.usuarioId = nuevoUsuario._id;
-    res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error en el servidor' });
-}
+// Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI || '', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('🟢 Conectado a MongoDB'))
+.catch((err) => console.error('🔴 Error en MongoDB:', err));
+
+// Importar middleware de autenticación
+const requireLogin = require('./middlewares/authMiddleware');
+
+// Rutas protegidas
+app.get('/crear', requireLogin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'crear.html'));
 });
 
-// Login de usuario
-router.post('/login', async (req, res) => {
-const { correo, contraseña } = req.body;
-
-try {
-const usuario = await User.findOne({ correo });
-    if (!usuario) {
-    return res.status(400).json({ mensaje: 'Credenciales inválidas' });
-    }
-
-    const coinciden = await bcrypt.compare(contraseña, usuario.contraseña);
-    if (!coinciden) {
-    return res.status(400).json({ mensaje: 'Credenciales inválidas' });
-    }
-
-    req.session.usuarioId = usuario._id;
-    res.json({ mensaje: 'Login exitoso' });
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al iniciar sesión' });
-}
+app.get('/dashboard', requireLogin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'private', 'dashboard.html'));
 });
 
-// Logout de usuario
-router.post('/logout', (req, res) => {
-req.session.destroy(() => {
-    res.clearCookie('connect.sid');
-    res.json({ mensaje: 'Sesión cerrada' });
-});
+// Ruta pública
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'Menu_principal.html'));
 });
 
-module.exports = router;
+// Rutas de login y registro
+const authRoutes = require('./routes/authRoutes');
+app.use(authRoutes);
+
+// Puerto
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
+});

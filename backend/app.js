@@ -36,3 +36,29 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
 });
+
+app.get('/crear', requireLogin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'crear.html'));
+});
+
+
+//pnanel para usuario
+const requireLogin = require('./middlewares/authMiddleware');
+
+app.get('/dashboard', requireLogin, (req, res) => {
+res.sendFile(path.join(__dirname, 'private/dashboard.html'));
+});
+
+function requireLogin(req, res, next) {
+    if (req.session && req.session.usuarioId) {
+    next();
+    } else {
+    res.redirect('/login.html');
+    }
+}
+
+module.exports = requireLogin;
+
+
+
+

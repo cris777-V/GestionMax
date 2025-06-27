@@ -9,7 +9,7 @@ const app = express();
 
 // Permitir CORS desde el frontend
 app.use(cors({
-    origin: 'https://gestionmax.netlify.app/',
+    origin: 'https://gestionmax.netlify.app',
     credentials: true
 }));
 

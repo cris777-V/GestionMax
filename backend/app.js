@@ -35,6 +35,15 @@ mongoose.connect(process.env.MONGO_URI || '', {
 .then(() => console.log('🟢 Conectado a MongoDB'))
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
 
+// 💡 Middleware para proteger rutas
+function requireLogin(req, res, next) {
+    if (req.session && req.session.usuarioId) {
+        return next();
+    } else {
+        return res.redirect('/login.html');
+    }
+}
+
 // Rutas protegidas
 app.get('/crear', requireLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'crear.html'));

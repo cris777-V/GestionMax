@@ -7,8 +7,9 @@ require('dotenv').config();
 
 const app = express();
 
+// Permitir CORS desde el frontend
 app.use(cors({
-    origin: 'https://gestionmax.netlify.app/', 
+    origin: 'https://gestionmax.netlify.app/',
     credentials: true
 }));
 
@@ -18,7 +19,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: true,
+        secure: true,         // En producción con HTTPS
         httpOnly: true,
         sameSite: 'lax'
     }
@@ -35,36 +36,28 @@ mongoose.connect(process.env.MONGO_URI || '', {
 .then(() => console.log('🟢 Conectado a MongoDB'))
 .catch((err) => console.error('🔴 Error en MongoDB:', err));
 
-// 💡 Middleware para proteger rutas
-function requireLogin(req, res, next) {
-    if (req.session && req.session.usuarioId) {
-        return next();
-    } else {
-        return res.redirect('/login.html');
+// Rutas protegidas (validación manual en cada ruta)
+app.get('/crear', (req, res) => {
+    if (!req.session || !req.session.usuarioId) {
+        return res.status(401).send('Debes iniciar sesión');
     }
-}
-
-// Rutas protegidas
-app.get('/crear', requireLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'crear.html'));
 });
 
-app.get('/dashboard', requireLogin, (req, res) => {
-    res.sendFile(path.join(__dirname, 'private/dashboard.html'));
+app.get('/dashboard', (req, res) => {
+    if (!req.session || !req.session.usuarioId) {
+        return res.status(401).send('Debes iniciar sesión');
+    }
+    res.sendFile(path.join(__dirname, 'private', 'dashboard.html'));
 });
 
-// Ruta raíz
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/Menu_principal.html'));
-});
-
-// Rutas de autenticación
-const authRoutes = require('./routes/auth');
-app.use(authRoutes);
-
-// Obtener usuario actual
+// Ruta para obtener el usuario actual
 const User = require('./models/user');
-app.get('/api/usuario-actual', requireLogin, async (req, res) => {
+app.get('/api/usuario-actual', async (req, res) => {
+    if (!req.session || !req.session.usuarioId) {
+        return res.status(401).json({ mensaje: 'No autorizado' });
+    }
+
     try {
         const usuario = await User.findById(req.session.usuarioId).select('-contraseña');
         res.json(usuario);
@@ -72,6 +65,15 @@ app.get('/api/usuario-actual', requireLogin, async (req, res) => {
         res.status(500).json({ mensaje: 'Error al obtener el usuario' });
     }
 });
+
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'Menu_principal.html'));
+});
+
+// Rutas de autenticación
+const authRoutes = require('./routes/auth');
+app.use(authRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3001;

@@ -5,6 +5,16 @@ require('dotenv').config();
 
 const app = express();
 
+const session = require('express-session');
+
+app.use(session({
+    secret: 'gestionmax_supersecreto',
+resave: false,
+saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

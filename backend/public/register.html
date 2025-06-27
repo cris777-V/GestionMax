@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Registro - Gestion Max</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Crear cuenta</h1>
+</header>
+
+<main>
+    <section class="formulario">
+    <form action="/api/register" method="POST">
+        <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+        </div>
+
+        <div class="form-group">
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña" required>
+        </div>
+
+        <div class="boton">
+        <input type="submit" value="Registrarme">
+        </div>
+    </form>
+    </section>
+</main>
+
+<footer class="footer-volver">
+    <a href="login.html" class="boton-volver">Ya tengo una cuenta</a>
+</footer>
+</body>
+</html>

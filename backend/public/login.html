@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Iniciar Sesión - Gestion Max</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Iniciar Sesión</h1>
+</header>
+
+<main>
+    <section class="formulario">
+    <form action="/api/login" method="POST">
+        <div class="form-group">
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+        </div>
+
+        <div class="form-group">
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña" required>
+        </div>
+
+        <div class="boton">
+        <input type="submit" value="Ingresar">
+        </div>
+    </form>
+    </section>
+</main>
+
+<footer class="footer-volver">
+    <a href="register.html" class="boton-volver">Crear una cuenta nueva</a>
+</footer>
+</body>
+</html>

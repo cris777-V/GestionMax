@@ -21,7 +21,7 @@ app.use(session({
     cookie: {
         secure: true,        
         httpOnly: true,
-        sameSite: 'lax'
+        sameSite: 'none'
     }
 }));
 
@@ -38,10 +38,10 @@ mongoose.connect(process.env.MONGO_URI || '', {
 
 // Rutas protegidas (validación manual en cada ruta)
 app.get('/crear', (req, res) => {
-    if (!req.session || !req.session.usuarioId) {
-        return res.status(401).send('Debes iniciar sesión');
-    }
-    res.sendFile(path.join(__dirname, 'public', 'crear.html'));
+if (!req.session || !req.session.usuarioId) {
+    return res.status(401).send('Debes iniciar sesión');
+}
+res.sendFile(path.join(__dirname, 'public', 'crear.html'));
 });
 
 app.get('/dashboard', (req, res) => {
@@ -52,19 +52,19 @@ app.get('/dashboard', (req, res) => {
 });
 
 // Ruta para obtener el usuario actual
-const User = require('./models/user');
 app.get('/api/usuario-actual', async (req, res) => {
     if (!req.session || !req.session.usuarioId) {
-        return res.status(401).json({ mensaje: 'No autorizado' });
-    }
+    return res.status(401).json({ mensaje: 'No autorizado' });
+}
 
     try {
-        const usuario = await User.findById(req.session.usuarioId).select('-contraseña');
-        res.json(usuario);
-    } catch (err) {
-        res.status(500).json({ mensaje: 'Error al obtener el usuario' });
-    }
+    const usuario = await User.findById(req.session.usuarioId).select('-contraseña');
+    res.json(usuario);
+} catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener el usuario' });
+}
 });
+
 
 // Ruta raíz
 app.get('/', (req, res) => {

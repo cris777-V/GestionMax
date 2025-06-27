@@ -1,38 +1,70 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
-const session = require('express-session');
-require('dotenv').config();
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
-const app = express();
+const router = express.Router();
 
-// Archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+// Mostrar formulario de login
+router.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'login.html'));
+});
 
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI || '', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('🟢 Conectado a MongoDB'))
-.catch((err) => console.error('🔴 Error en MongoDB:', err));
+// Mostrar formulario de registro
+router.get('/registro', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'registro.html'));
+});
 
-// Rutas protegidas
-app.get('/crear', (req, res) => {
-    if (!req.session || !req.session.usuarioId) {
-        return res.status(401).send('No autorizado');
+// Procesar registro de usuario
+router.post('/registro', express.urlencoded({ extended: true }), async (req, res) => {
+    const { nombre, correo, contraseña } = req.body;
+
+    try {
+        const usuarioExistente = await User.findOne({ correo });
+        if (usuarioExistente) {
+            return res.status(400).send('Correo ya registrado');
+        }
+
+        const contraseñaHash = await bcrypt.hash(contraseña, 10);
+        const nuevoUsuario = new User({ nombre, correo, contraseña: contraseñaHash });
+        await nuevoUsuario.save();
+
+        req.session.usuarioId = nuevoUsuario._id;
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error al registrar:', error);
+        res.status(500).send('Error del servidor');
     }
-    res.sendFile(path.join(__dirname, 'public', 'crear.html'));
 });
 
-app.get('/dashboard', (req, res) => {
-    if (!req.session || !req.session.usuarioId) {
-        return res.status(401).send('No autorizado');
+// Procesar login
+router.post('/login', express.urlencoded({ extended: true }), async (req, res) => {
+    const { correo, contraseña } = req.body;
+
+    try {
+        const usuario = await User.findOne({ correo });
+        if (!usuario) {
+            return res.status(400).send('Usuario no encontrado');
+        }
+
+        const esValida = await bcrypt.compare(contraseña, usuario.contraseña);
+        if (!esValida) {
+            return res.status(401).send('Contraseña incorrecta');
+        }
+
+        req.session.usuarioId = usuario._id;
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error en login:', error);
+        res.status(500).send('Error del servidor');
     }
-    res.sendFile(path.join(__dirname, 'private', 'dashboard.html'));
 });
 
-// Ruta pública
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Cerrar sesión
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
 });
+
+module.exports = router;
